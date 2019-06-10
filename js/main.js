@@ -21,19 +21,32 @@
         y: 0,
         dirX: 0,
         dirY: 0,
-        move: function() {
-            switch (keyPressed) {
+        move: function(canvasWidth, canvasHeight) {
+            let limitTop = 0;
+            let limitLeft = 0;
+            let limitRight = canvasWidth - this.w;
+            let limitBottm = canvasHeight - this.h;
+
+            switch (keyPressed) {             
                 case 'ArrowDown':
-                    this.y += deltaMove;
+                    if (this.y < limitBottm) {
+                        this.y += deltaMove;
+                    }
                     break;
                 case 'ArrowUp':
-                    this.y -= deltaMove;
+                    if (this.y > limitTop) {
+                        this.y -= deltaMove;
+                    }
                     break;
                 case 'ArrowRight':
-                    this.x += deltaMove;
+                    if (this.x < limitRight) {
+                        this.x += deltaMove;
+                    } 
                     break;
                 case 'ArrowLeft':
-                    this.x -= deltaMove;
+                    if (this.x > limitLeft) {
+                        this.x -= deltaMove;
+                    }                
                     break;
                 default:
                     break;
@@ -78,7 +91,7 @@
     // Render function to be called in the init
     function render() {
         ctx.clearRect(0, 0, 800, 500);
-        protoBee.move();
+        protoBee.move(co.width, co.height);
         ctx.drawImage(bgImg, 0, 0);
         ctx.drawImage(beeImg, protoBee.x, protoBee.y);
         ctx.drawImage(flowerImg, protoFlower.x, protoFlower.y);
