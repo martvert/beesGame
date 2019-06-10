@@ -70,6 +70,7 @@
         render();
 
         document.addEventListener('keydown', checkKey);
+        document.addEventListener('keyup', stopMotion);
     }
 
     //render function to be called in the init
@@ -81,6 +82,11 @@
     //checking key
     function checkKey(e) {
         keyPressed = e.key;
+    }
+
+    //stop motion
+    function stopMotion() {
+        keyPressed = "noKey";
     }
 
     window.addEventListener('load', init);
