@@ -67,15 +67,21 @@
             ctx.drawImage(flowerImg, protoFlower.x, protoFlower.y);
         }
 
+        // Render the entire picture
         render();
 
+        // Add listener on key events
         document.addEventListener('keydown', checkKey);
         document.addEventListener('keyup', stopMotion);
     }
 
-    //render function to be called in the init
+    // Render function to be called in the init
     function render() {
+        ctx.clearRect(0, 0, 800, 500);
         protoBee.move();
+        ctx.drawImage(bgImg, 0, 0);
+        ctx.drawImage(beeImg, protoBee.x, protoBee.y);
+        ctx.drawImage(flowerImg, protoFlower.x, protoFlower.y);
         requestAnimationFrame(render);
     }
 
