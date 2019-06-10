@@ -8,18 +8,15 @@
     protoFlower = {
         w: 60,
         h: 60,
-        x: 120,
+        x: 620,
         y: 345,
-        dirX: 0, // 0 = flower goes to the right 1 = flower goes to the left
-        dirY: 0, // 0 = flower goes down 1 = flower goes up
-        move: function() {
-            // flower limitation
-
-            // flower moving
-            this.dirX === 0 ? this.x += 2 : this.dirX -= 2;
-            this.dirY === 0 ? this.y += 3 : this.dirY -= 3;
-
-        }
+        initPosition: function(canvasWidth, canvasHeight) {
+            let limitTop = canvasHeight / 2;
+            let limitRight = canvasWidth - this.w;
+            let limitBottom = canvasHeight - this.h;
+            this.x = Math.random() * limitRight;
+            this.y = Math.random() * (limitBottom - limitTop) + limitTop;
+        } 
     }
 
     protoBee = {
@@ -31,11 +28,11 @@
             let limitTop = 0;
             let limitLeft = 0;
             let limitRight = canvasWidth - this.w;
-            let limitBottm = canvasHeight - this.h;
+            let limitBottom = canvasHeight - this.h;
 
             switch (keyPressed) {             
                 case 'ArrowDown':
-                    if (this.y < limitBottm) {
+                    if (this.y < limitBottom) {
                         this.y += deltaMove;
                     }
                     break;
@@ -86,6 +83,9 @@
             ctx.drawImage(flowerImg, protoFlower.x, protoFlower.y);
         }
 
+        // Init flower position
+        protoFlower.initPosition(co.width, co.height);
+
         // Render the entire picture
         render();
 
@@ -97,7 +97,6 @@
     // Render function to be called in the init
     function render() {
         protoBee.move(co.width, co.height);
-        protoFlower.move();
         ctx.clearRect(0, 0, 800, 500);
         ctx.drawImage(bgImg, 0, 0);
         ctx.drawImage(beeImg, protoBee.x, protoBee.y);
