@@ -1,66 +1,87 @@
-(function() {
+(function () {
 
-    let co, ctx, bgImg, protoFlower, flowerCollector;
-    
-    function init() {
-        co = document.querySelector('#canvas');
-        ctx = co.getContext('2d');
-        bgImg = new Image();
-        bgImg.src = 'assets/img/background.png';
-        flowerCollector = []; 
+    let co, ctx, bgImg;
+    let flowerImg, beeImg, protoFlower, protoBee;
+    let keyPressed = '';
+    let deltaMove = 5;
 
-        //canvas background img
-        bgImg.onload = function() {
-            ctx.drawImage(bgImg, 0, 0);
-        };
-        
-        // flower object
-        protoFlower = {
-            w: 40,
-            h: 60,
-            x: 0,
-            y: 0,
-            //iconPath: 'assets/img/flower-icon.png',
-            col: 'rgb(255, 255, 0)',
-            dirX: 0, // 0 = to the right 1 = to the left
-            dirY: 0, // 0 = down 1 = up
-            make: function() {
-                flowerCollector.push(this);
-            },
-            move: function() {
-                // let icon = new Image();
-                // icon.src = this.iconPath;
-                // icon.onload = function() {
-                //     ctx.drawImage(icon, this.x, this.y);
-                // };
-                
-                ctx.fillStyle = this.col;
-                ctx.fillRect(this.x, this.y, this.w, this.h);
+    protoFlower = {
+        w: 60,
+        h: 60,
+        x: 120,
+        y: 345,
+        dirX: 0,
+        dirY: 0,
+    }
+
+    protoBee = {
+        w: 60,
+        h: 60,
+        x: 0,
+        y: 0,
+        dirX: 0,
+        dirY: 0,
+        move: function() {
+            switch (keyPressed) {
+                case 'ArrowDown':
+                    this.y += deltaMove;
+                    break;
+                case 'ArrowUp':
+                    this.y -= deltaMove;
+                    break;
+                case 'ArrowRight':
+                    this.x += deltaMove;
+                    break;
+                case 'ArrowLeft':
+                    this.x -= deltaMove;
+                    break;
+                default:
+                    break;
             }
         }
+    }
 
-        flowerCloneFactory();
+    function init() {
+        // canvas context
+        co = document.querySelector('#canvas');
+        ctx = co.getContext('2d');
+
+        //canvas background img
+        bgImg = new Image();
+        bgImg.src = 'assets/img/background.png';
+        bgImg.onload = function () {
+            ctx.drawImage(bgImg, 0, 0);
+        }
+
+         //bee img
+         beeImg = new Image();
+         beeImg.src = 'assets/img/bee-icon.png';
+         beeImg.onload = function () {
+             ctx.drawImage(beeImg, protoBee.x, protoBee.y);
+         }
+
+          //flower img
+        flowerImg = new Image();
+        flowerImg.src = 'assets/img/flower-icon.png';
+        flowerImg.onload = function () {
+            ctx.drawImage(flowerImg, protoFlower.x, protoFlower.y);
+        }
+
         render();
 
+        document.addEventListener('keydown', checkKey);
     }
 
-    function flowerCloneFactory() {
-        let clone = Object.create(protoFlower);
-        clone.make();
-    }
-
+    //render function to be called in the init
     function render() {
-        ctx.clearRect(0, 0, 800, 500);
-        for (let i = 0; i < flowerCollector.length; i++) {
-            flowerCollector[i].move();
-        }
-        console.log(flowerCollector);
-
+        protoBee.move();
+        requestAnimationFrame(render);
     }
 
+    //checking key
+    function checkKey(e) {
+        keyPressed = e.key;
+    }
 
-
-
-        
     window.addEventListener('load', init);
 })();
