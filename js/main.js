@@ -10,8 +10,16 @@
         h: 60,
         x: 120,
         y: 345,
-        dirX: 0,
-        dirY: 0,
+        dirX: 0, // 0 = flower goes to the right 1 = flower goes to the left
+        dirY: 0, // 0 = flower goes down 1 = flower goes up
+        move: function() {
+            // flower limitation
+
+            // flower moving
+            this.dirX === 0 ? this.x += 2 : this.dirX -= 2;
+            this.dirY === 0 ? this.y += 3 : this.dirY -= 3;
+
+        }
     }
 
     protoBee = {
@@ -19,8 +27,6 @@
         h: 60,
         x: 0,
         y: 0,
-        dirX: 0,
-        dirY: 0,
         move: function(canvasWidth, canvasHeight) {
             let limitTop = 0;
             let limitLeft = 0;
@@ -90,8 +96,9 @@
 
     // Render function to be called in the init
     function render() {
-        ctx.clearRect(0, 0, 800, 500);
         protoBee.move(co.width, co.height);
+        protoFlower.move();
+        ctx.clearRect(0, 0, 800, 500);
         ctx.drawImage(bgImg, 0, 0);
         ctx.drawImage(beeImg, protoBee.x, protoBee.y);
         ctx.drawImage(flowerImg, protoFlower.x, protoFlower.y);
