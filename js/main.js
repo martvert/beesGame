@@ -3,7 +3,8 @@
     let co, ctx, bgImg;
     let flowerImg, beeImg, protoFlower, protoBee;
     let keyPressed = '';
-    let deltaMove = 5;
+    let deltaMove = 4;
+    let deltaCollision = 30;
 
     protoFlower = {
         w: 60,
@@ -14,8 +15,8 @@
             let limitTop = canvasHeight / 2;
             let limitRight = canvasWidth - this.w;
             let limitBottom = canvasHeight - this.h;
-            this.x = Math.random() * limitRight;
-            this.y = Math.random() * (limitBottom - limitTop) + limitTop;
+            this.x = parseInt(Math.random() * limitRight);
+            this.y = parseInt(Math.random() * (limitBottom - limitTop) + limitTop);
         } 
     }
 
@@ -54,6 +55,8 @@
                 default:
                     break;
             }
+
+            checkCollision();
         }
     }
 
@@ -92,6 +95,17 @@
         // Add listener on key events
         document.addEventListener('keydown', checkKey);
         document.addEventListener('keyup', stopMotion);
+    }
+
+    // function checkCollision
+    function checkCollision() {
+        if (protoBee.x > protoFlower.x - deltaCollision 
+            && protoBee.x < protoFlower.x + deltaCollision
+            &&  protoBee.y > protoFlower.y - deltaCollision 
+            && protoBee.y < protoFlower.y + deltaCollision) {
+            
+            protoFlower.initPosition(co.width, co.height);
+        }
     }
 
     // Render function to be called in the init
